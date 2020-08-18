@@ -1,0 +1,24 @@
+package com.luv2code.ecommerce.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Table(name="product_category")
+@Data
+//@Getter
+//@Setter
+public class ProductCategory {
+
+	private Long id;
+	private String categoryName;
+	private List<Product> products = new ArrayList<Product>();
+	
+}
