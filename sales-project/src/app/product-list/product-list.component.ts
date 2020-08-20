@@ -43,7 +43,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
     // now get the products for the given category id
     this.productsSubscription = this.productService.getProductList(this.currentCategoryId).subscribe(
       data => {
-        console.log(data);
         this.products = data;
       }
     );
