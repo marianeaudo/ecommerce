@@ -11,12 +11,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProductListComponent implements OnInit, OnDestroy {
   products: Product[] = [];
-  productsSubscription: Subscription;
-  routeSubscription: Subscription;
   currentCategoryId: number;
   currentCategoryName: string;
   searchMode: boolean;
-  productSearchSubscription: Subscription;
+  subscriptions: Subscription[] = [];
 
   constructor(
     private productService: ProductService,
@@ -24,9 +22,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.routeSubscription = this.route.paramMap.subscribe(() => {
+    const routeSubscription: Subscription = this.route.paramMap.subscribe(() => {
       this.listProducts();
     });
+    this.subscriptions.push(routeSubscription);
   }
 
   listProducts(): void {
@@ -58,11 +57,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
 
     // now get the products for the given category id
-    this.productsSubscription = this.productService
+    const productsSubscription: Subscription = this.productService
       .getProductList(this.currentCategoryId)
       .subscribe((data) => {
         this.products = data;
       });
+    this.subscriptions.push(productsSubscription);
   }
 
   handleSearchProducts(): void {
@@ -70,16 +70,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
     // now search for the products using keyword
 
-    this.productSearchSubscription = this.productService.searchProducts(keyword).subscribe(
+    const productSearchSubscription: Subscription = this.productService.searchProducts(keyword).subscribe(
       data => {
         this.products = data;
       }
     );
+    this.subscriptions.push(productSearchSubscription);
   }
 
   ngOnDestroy(): void {
-    this.productsSubscription.unsubscribe();
-    this.routeSubscription.unsubscribe();
-    this.productSearchSubscription.unsubscribe();
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 }

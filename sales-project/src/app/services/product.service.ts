@@ -38,6 +38,14 @@ export class ProductService {
       );
   }
 
+  getProduct(theProductId: number): Observable<Product> {
+
+    // need to build URL based on product id
+    const productUrl = 'http://localhost:8080/api/products/' + theProductId;
+
+    return this.httpClient.get<Product>(productUrl);
+  }
+
 }
 
 interface GetResponseProduct {
