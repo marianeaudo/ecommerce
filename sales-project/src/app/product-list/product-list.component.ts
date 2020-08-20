@@ -15,6 +15,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   routeSubscription: Subscription;
   currentCategoryId: number;
   currentCategoryName: string;
+  searchMode: boolean;
+  productSearchSubscription: Subscription;
 
   constructor(
     private productService: ProductService,
@@ -28,6 +30,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   listProducts(): void {
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');
+
+    if(this.searchMode) {
+      this.handleSearchProducts();
+    } else {
+      this.handleListProducts();
+    }
+
+  }
+
+  handleListProducts(): void {
     // Check if "id" parameter is available
 
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
@@ -52,8 +65,21 @@ export class ProductListComponent implements OnInit, OnDestroy {
       });
   }
 
+  handleSearchProducts(): void {
+    const keyword: string = this.route.snapshot.paramMap.get('keyword');
+
+    // now search for the products using keyword
+
+    this.productSearchSubscription = this.productService.searchProducts(keyword).subscribe(
+      data => {
+        this.products = data;
+      }
+    );
+  }
+
   ngOnDestroy(): void {
     this.productsSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
+    this.productSearchSubscription.unsubscribe();
   }
 }
