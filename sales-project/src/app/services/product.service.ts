@@ -3,8 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Product } from '../common/product';
-import { ProductCategory } from '../common/product-category';
+import { Product, ProductCategory, GetResponseProduct, GetResponseProductCategory } from '../model/models';
 
 @Injectable({
   providedIn: 'root'
@@ -46,16 +45,4 @@ export class ProductService {
     return this.httpClient.get<Product>(productUrl);
   }
 
-}
-
-interface GetResponseProduct {
-  _embedded: {
-    products: Product[];
-  };
-}
-
-interface GetResponseProductCategory {
-  _embedded: {
-    productCategory: ProductCategory[];
-  };
 }
