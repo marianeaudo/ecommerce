@@ -2,6 +2,12 @@ export interface GetResponseProduct {
   _embedded: {
     products: Product[];
   };
+  page: {
+    size: number;
+    totalElements: number;
+    total: number;
+    number: number;
+  };
 }
 
 export interface GetResponseProductCategory {

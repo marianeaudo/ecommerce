@@ -12,13 +12,6 @@ export class ProductService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getProductList(id: number): Observable<Product[]> {
-
-    // need to build  URL based on category Id
-    const searchUrl = 'http://localhost:8080/api/products/search/findByCategoryId?id=' + +id;
-    return this.getProducts(searchUrl);
-  }
-
   getProductCategories(): Observable<ProductCategory[]> {
     const searchUrl = 'http://localhost:8080/api/product-category';
     return this.httpClient.get<GetResponseProductCategory>(searchUrl).pipe(
@@ -26,9 +19,19 @@ export class ProductService {
       );
   }
 
-  searchProducts(keyword: string): Observable<Product[]> {
-    const searchUrl = 'http://localhost:8080/api/products/search/findByNameContaining?name=' + keyword;
-    return this.getProducts(searchUrl);
+  searchProductsPaginate(
+    page: number,
+    pageSize: number,
+    keyword: string
+  ): Observable<GetResponseProduct> {
+    const searchUrl =
+      'http://localhost:8080/api/products/search/findByNameContaining?name=' +
+      keyword +
+      '&page=' +
+      page +
+      '&size=' +
+      pageSize;
+    return this.httpClient.get<GetResponseProduct>(searchUrl);
   }
 
   getProducts(searchUrl: string): Observable<Product[]> {
@@ -43,6 +46,14 @@ export class ProductService {
     const productUrl = 'http://localhost:8080/api/products/' + theProductId;
 
     return this.httpClient.get<Product>(productUrl);
+  }
+
+  getProductListPaginate(page: number, pageSize: number, id: number): Observable<GetResponseProduct> {
+
+    // need to build  URL based on category Id, page and page size
+    const searchUrl = 'http://localhost:8080/api/products/search/findByCategoryId?id=' + +id
+                      + '&page=' + page + '&size=' + pageSize;
+    return this.httpClient.get<GetResponseProduct>(searchUrl);
   }
 
 }
