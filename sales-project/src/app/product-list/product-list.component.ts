@@ -1,8 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ProductService } from '../services/product.service';
-import { Product, GetResponseProduct } from '../model/models';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+
+import { ProductService } from '../services/product.service';
+import { CartService } from '../services/cart.service';
+import { Product, GetResponseProduct } from '../model/models';
+import { CartItem } from '../model/cart-item';
 
 @Component({
   selector: 'app-product-list',
@@ -26,7 +29,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -120,6 +124,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.pageSize = pageSize;
     this.pageNumber = 1;
     this.listProducts();
+  }
+
+  addToCart(product: Product): void {
+    console.log('name : ' + product.name + ', price : ' + product.unitPrice);
+    const cartItem = new CartItem(product);
+    this.cartService.addToCart(cartItem);
   }
 
   ngOnDestroy(): void {

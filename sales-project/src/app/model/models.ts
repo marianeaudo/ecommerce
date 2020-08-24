@@ -37,4 +37,3 @@ export interface ProductCategory {
   categoryName: string;
 
 }
-

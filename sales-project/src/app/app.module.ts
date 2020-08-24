@@ -12,6 +12,7 @@ import { ProductService } from './services/product.service';
 import { ProductCategoryMenuComponent } from './product-category-menu/product-category-menu.component';
 import { SearchComponent } from './search/search.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
+import { CartStatusComponent } from './cart-status/cart-status.component';
 
 
 const routes: Routes = [
@@ -30,7 +31,8 @@ const routes: Routes = [
     ProductListComponent,
     ProductCategoryMenuComponent,
     SearchComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    CartStatusComponent
   ],
   imports: [
     BrowserModule,
