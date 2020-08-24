@@ -40,6 +40,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       }
     );
     this.subscriptions.push(routeSubscription);
+    this.cartService.computeCartTotals();
   }
 
   listProducts(): void {
@@ -127,7 +128,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   addToCart(product: Product): void {
-    console.log('name : ' + product.name + ', price : ' + product.unitPrice);
     const cartItem = new CartItem(product);
     this.cartService.addToCart(cartItem);
   }

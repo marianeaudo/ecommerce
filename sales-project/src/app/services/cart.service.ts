@@ -12,6 +12,10 @@ export class CartService {
   totalQuantity: Subject<number> = new Subject<number>();
 
   constructor() {
+    this.fetchCartItems();
+  }
+
+  private fetchCartItems(): void {
     this.cartItems =
       JSON.parse(sessionStorage.getItem('cartItems')) != null
         ? JSON.parse(sessionStorage.getItem('cartItems'))
