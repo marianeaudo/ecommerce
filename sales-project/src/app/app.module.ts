@@ -13,6 +13,7 @@ import { ProductCategoryMenuComponent } from './product-category-menu/product-ca
 import { SearchComponent } from './search/search.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { CartStatusComponent } from './cart-status/cart-status.component';
+import { CartDetailComponent } from './cart-detail/cart-detail.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path: 'products', component: ProductListComponent},
   {path: 'search/:keyword', component: ProductListComponent},
   {path: 'products/:id', component: ProductDetailsComponent},
+  {path: 'cart-detail', component: CartDetailComponent},
   {path: '', redirectTo: '/products', pathMatch: 'full'},
   {path: '**', redirectTo: '/products', pathMatch: 'full'}
 ];
@@ -32,7 +34,8 @@ const routes: Routes = [
     ProductCategoryMenuComponent,
     SearchComponent,
     ProductDetailsComponent,
-    CartStatusComponent
+    CartStatusComponent,
+    CartDetailComponent
   ],
   imports: [
     BrowserModule,
