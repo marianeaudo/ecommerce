@@ -6,38 +6,40 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.css']
+  styleUrls: ['./checkout.component.css'],
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
-
   checkOutFormGroup: FormGroup;
   totalPrice: number = 0;
   totalQuantity: number = 0;
   totalPriceSubscription: Subscription;
   totalQuantitySubscription: Subscription;
 
-  constructor(private formBuilder: FormBuilder, private cartService: CartService) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private cartService: CartService
+  ) {}
 
   ngOnInit(): void {
     this.checkOutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: [''],
         lastName: [''],
-        email: ['']
+        email: [''],
       }),
       shippingAdress: this.formBuilder.group({
         street: [''],
         city: [''],
         state: [''],
         country: [''],
-        zipCode: ['']
+        zipCode: [''],
       }),
       billingAdress: this.formBuilder.group({
         street: [''],
         city: [''],
         state: [''],
         country: [''],
-        zipCode: ['']
+        zipCode: [''],
       }),
       creditCard: this.formBuilder.group({
         cardType: [''],
@@ -45,20 +47,21 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         cardNumber: [''],
         securityCode: [''],
         expirationMonth: [''],
-        expirationYear: ['']
-      })
+        expirationYear: [''],
+      }),
     });
-    this.totalPriceSubscription = this.cartService.totalPrice.subscribe(
-      (tempPrice: number) => {
-        this.totalPrice = tempPrice;
+
+    this.totalPriceSubscription = this.cartService.totalPrice.subscribe((tempTotalPrice: number) => {
+        this.totalPrice = tempTotalPrice;
       }
     );
-    this.totalQuantitySubscription = this.cartService.totalQuantity.subscribe(
-      (tempQuantity: number) => {
-        this.totalQuantity = tempQuantity;
-      }
-    );
-    console.log(this.totalQuantity);
+
+    this.totalQuantitySubscription = this.cartService.totalQuantity.subscribe((tempTotalQuantity: number) => {
+      this.totalQuantity = tempTotalQuantity;
+    });
+
+    this.cartService.computeCartTotals();
+
   }
 
   onSubmit(): void {
@@ -68,7 +71,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   copyShippingAddressToBillingAddress(event): void {
     if (event.target.checked) {
-      this.checkOutFormGroup.controls.billingAdress.setValue(this.checkOutFormGroup.controls.shippingAdress.value);
+      this.checkOutFormGroup.controls.billingAdress.setValue(
+        this.checkOutFormGroup.controls.shippingAdress.value
+      );
     } else {
       this.checkOutFormGroup.controls.billingAdress.reset();
     }
