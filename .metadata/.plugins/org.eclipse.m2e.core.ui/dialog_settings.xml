@@ -62,6 +62,7 @@
 	</section>
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\Users\maria\workspaces-eclipse\eclipse-workspace-salesProject\spring-boot-ecommerce2"/>
 			<item value="C:\Users\maria\Downloads\02-backend"/>
 			<item value="C:\Users\maria\workspaces-eclipse\eclipse-workspace-salesProject\spring-boot-ecommerce"/>
 		</list>
