@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CartService } from '../services/cart.service';
 import { Luv2ShopFormService } from '../services/luv2-shop-form.service';
 import { Subscription } from 'rxjs';
@@ -34,9 +34,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.checkOutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
-        firstName: [''],
-        lastName: [''],
-        email: [''],
+        firstName: new FormControl('', [Validators.required, Validators.minLength(2)]),
+        lastName: new FormControl('', [Validators.required, Validators.minLength(2)]),
+        email: new FormControl('', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
       }),
       shippingAddress: this.formBuilder.group({
         street: [''],
@@ -90,8 +90,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    console.log('Handling the submit button');
-    console.log(this.checkOutFormGroup.get('customer').value);
+    if (this.checkOutFormGroup.invalid) {
+        this.checkOutFormGroup.markAllAsTouched();
+    }
   }
 
   copyShippingAddressToBillingAddress(event): void {
@@ -142,6 +143,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       formGroup.get('state').setValue(states[0]);
     });
 
+  }
+
+  getFirstName(): any{
+    return this.checkOutFormGroup.get('customer.firstName');
+  }
+
+  getLastName(): any{
+    return this.checkOutFormGroup.get('customer.lastName');
+  }
+
+  getEmail(): any {
+    return this.checkOutFormGroup.get('customer.email');
   }
 
   ngOnDestroy(): void {
